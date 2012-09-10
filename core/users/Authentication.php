@@ -1,0 +1,41 @@
+<?php
+namespace core\users;
+
+use core\Database;
+
+abstract class Authentication
+{
+    public static function login($email, $password, $location)
+    {
+        $email = addslashes($email);
+
+        $database = new Database();
+        $database->connect();
+        $result = $database->query("SELECT id, password, salt FROM users WHERE email='{$email}'");
+
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_array(MYSQLI_ASSOC);		
+
+            $passwordHash = hash('sha512', $row['salt'].$password);	
+
+            if ($row['password'] == $passwordHash) {
+                $_SESSION['user_id'] = $row['id'];
+
+                header('Location: '.$location);
+            }
+        }
+
+        $database->disconnect();
+    }
+
+    public static function logout(){
+        unset($_SESSION['user_id']);
+
+        session_destroy();
+    }
+
+    public static function isLoggedIn(){
+        return isset($_SESSION['user_id']);
+    }
+}
+
