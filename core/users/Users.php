@@ -3,8 +3,15 @@ namespace core\users;
 
 use core\Database;
 
+/**
+ * @author Leonardo Rocha <leonardo.lsrocha@gmail.com>
+ * @package core
+ */
 class Users
 {
+    /**
+     * @var Database
+     */
     private $database;
 
     public function __construct()
@@ -12,6 +19,13 @@ class Users
         $this->database = new Database();
     }
 
+    /**
+     * @param string $name
+     * @param string $email
+     * @param string $password
+     *
+     * @return boolean
+     */
     public function addUser($name, $email, $password)
     {
         $name = addslashes($name);
@@ -28,11 +42,18 @@ EOD;
         return $this->database->basicQuery($sql);
     }
 
+    /**
+     * @param int $id User ID
+     * @return boolean
+     */
     public function deleteUser($id)
     {
         return $this->database->basicQuery("DELETE FROM users WHERE id='{$id}'");
     }
 
+    /**
+     * @return string 
+     */
     public function listUsers()
     {
         $this->database->connect();
@@ -51,6 +72,10 @@ EOD;
         return $table;
     }
 
+    /**
+     * @param string $email
+     * @return boolean
+     */
     public function isEmailRegistered($email)
     {
         $email = addslashes($email);
@@ -69,6 +94,9 @@ EOD;
         return $available;
     }
 
+    /**
+     * @return string
+     */
     public function generateSalt()
     {
         $salt = '';
@@ -82,6 +110,10 @@ EOD;
         return $salt;
     }
 
+    /**
+     * @param string $email
+     * @return string
+     */
     public function generateRecoveryToken($email)
     {
         $email = addslashes($email);
@@ -104,6 +136,11 @@ EOD;
         return $token;
     }
 
+    /**
+     * @param string $email
+     * @param string $password
+     * @param string $token
+     */
     public function createNewPassword($email, $password, $token)
     {
         $email = addslashes($email);

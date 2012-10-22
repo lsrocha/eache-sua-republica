@@ -3,8 +3,19 @@ namespace core\users;
 
 use core\Database;
 
+/**
+ * @abstract
+ * @author Leonardo Rocha <leonardo.lsrocha@gmail.com>
+ * @package core
+ */
 abstract class Authentication
 {
+    /**
+     * @static
+     * @param string $email
+     * @param string $password
+     * @param string $location URL you want to redirect user to
+     */
     public static function login($email, $password, $location)
     {
         $email = addslashes($email);
@@ -28,12 +39,19 @@ abstract class Authentication
         $database->disconnect();
     }
 
+    /**
+     * @static
+     */
     public static function logout(){
         unset($_SESSION['user_id']);
 
         session_destroy();
     }
 
+    /**
+     * @static
+     * @return boolean
+     */
     public static function isLoggedIn(){
         return isset($_SESSION['user_id']);
     }
