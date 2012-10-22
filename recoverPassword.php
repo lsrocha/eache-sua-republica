@@ -1,7 +1,7 @@
 <?php
 require 'includes/autoloader.php';
 
-use core\users\Users;
+use core\Users;
 
 if (isset($_GET['email']) && isset($_GET['token']) && isset($_POST['new_password'])) {
     $email = $_GET['email'];

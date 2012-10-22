@@ -3,7 +3,7 @@ session_start();
 
 require 'includes/autoloader.php';
 
-use core\users\Authentication;
+use core\Authentication;
 
 if (!Authentication::isLoggedIn()) {
     header('Location: index.php?goback='.$_SERVER['PHP_SELF']);

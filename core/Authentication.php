@@ -1,5 +1,5 @@
 <?php
-namespace core\users;
+namespace core;
 
 use core\Database;
 

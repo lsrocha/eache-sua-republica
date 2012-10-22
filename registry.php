@@ -1,7 +1,7 @@
 <?php
 require 'includes/autoloader.php';
 
-use core\users\Users;
+use core\Users;
 
 if (isset($_POST['name'])) {	
     $name = $_POST['name'];
