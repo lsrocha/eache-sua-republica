@@ -22,7 +22,7 @@ if (isset($_GET['email']) && isset($_GET['token']) && isset($_POST['new_password
         $message = <<<EOD
 Hey,\n 
 Click on the link below to create your new password: 
-\n http://leorocha.com/republicas/recoverPassword.php?email={$email}&token={$token}
+\n http://eacherepublica.com.br/temp/recoverPassword.php?email={$email}&token={$token}
 EOD;
         mail($email, '[Republicas] Recover password', $message);
 
