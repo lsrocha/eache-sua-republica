@@ -20,7 +20,7 @@ class Republicas
     }
 
     /**
-     * @param (int|string)[] $republica
+     * @param (float|int|string)[] $republica
      * @param int $who_posted
      */
     public function addRepublica(array $republica, $who_posted) {
@@ -40,19 +40,24 @@ class Republicas
                 'filter' => FILTER_SANITIZE_NUMBER_FLOAT,
                 'flags' => FILTER_FLAG_ALLOW_FRACTION
             );
+
+            $filterString = array(
+                'filter' => FILTER_SANITIZE_STRING,
+                'flags' => FILTER_FLAG_ENCODE_HIGH
+            );
             
             $options = array(
-                'name' => FILTER_SANITIZE_STRING,
+                'name' => $filterString,
                 'latitude' => $filterFloat,
                 'longitude' => $filterFloat,
                 'phone' => FILTER_SANITIZE_STRING,
                 'email' => FILTER_SANITIZE_EMAIL,
-                'address' => FILTER_SANITIZE_STRING,
+                'address' => $filterString,
                 'gener' => FILTER_SANITIZE_STRING,
                 'num_dwellers' => FILTER_SANITIZE_NUMBER_INT,
-                'vacancy_type' => FILTER_SANITIZE_STRING,
+                'vacancy_type' => $filterString,
                 'price' => $filterFloat,
-                'more' => FILTER_SANITIZE_STRING
+                'more' => $filterString
             );
 
             $republica = filter_var_array($republica, $options);
