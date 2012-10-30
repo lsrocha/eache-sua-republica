@@ -24,6 +24,32 @@ class Republicas
      * @param int $who_posted
      */
     public function addRepublica(array $republica, $who_posted) {
+        $filterFloat = array(
+            'filter' => FILTER_SANITIZE_NUMBER_FLOAT,
+            'flags' => FILTER_FLAG_ALLOW_FRACTION
+        );
+
+        $filterString = array(
+            'filter' => FILTER_SANITIZE_STRING,
+            'flags' => FILTER_FLAG_ENCODE_HIGH
+        );
+            
+        $options = array(
+            'name' => $filterString,
+            'latitude' => $filterFloat,
+            'longitude' => $filterFloat,
+            'phone' => FILTER_SANITIZE_STRING,
+            'email' => FILTER_SANITIZE_EMAIL,
+            'address' => $filterString,
+            'gener' => FILTER_SANITIZE_STRING,
+            'num_dwellers' => FILTER_SANITIZE_NUMBER_INT,
+            'vacancy_type' => $filterString,
+            'price' => $filterFloat,
+            'more' => $filterString
+        );
+
+        $republica = filter_var_array($republica, $options);
+
         $options = array(
             'email' => FILTER_VALIDATE_EMAIL,
             'latitude' => FILTER_VALIDATE_FLOAT,
@@ -36,33 +62,13 @@ class Republicas
         $valid &= (bool) filter_var($who_posted, FILTER_VALIDATE_INT);
 
         if ($valid) {
-            $filterFloat = array(
-                'filter' => FILTER_SANITIZE_NUMBER_FLOAT,
-                'flags' => FILTER_FLAG_ALLOW_FRACTION
-            );
+            $sql = "SELECT id FROM republicas WHERE latitude='{$republica['latitude']}' AND longitude='{$republica['longitude']}'";
 
-            $filterString = array(
-                'filter' => FILTER_SANITIZE_STRING,
-                'flags' => FILTER_FLAG_ENCODE_HIGH
-            );
-            
-            $options = array(
-                'name' => $filterString,
-                'latitude' => $filterFloat,
-                'longitude' => $filterFloat,
-                'phone' => FILTER_SANITIZE_STRING,
-                'email' => FILTER_SANITIZE_EMAIL,
-                'address' => $filterString,
-                'gener' => FILTER_SANITIZE_STRING,
-                'num_dwellers' => FILTER_SANITIZE_NUMBER_INT,
-                'vacancy_type' => $filterString,
-                'price' => $filterFloat,
-                'more' => $filterString
-            );
+            $this->database->connect();
+            $result = $this->database->query($sql);
 
-            $republica = filter_var_array($republica, $options);
-            
-            $sql = <<<EOT
+            if ($result->num_rows == 0) {
+                $sql = <<<EOT
 INSERT INTO republicas(
     name, latitude, longitude, 
     phone, email, price, 
@@ -77,7 +83,13 @@ VALUE(
 )
 EOT;
 
-            return $this->database->basicQuery($sql);
+                $result = this->database->query($sql);
+                $this->database->disconnect();
+                
+                return $result;
+            }
+
+            $this->database->disconnect();
         }
 
         return false;
