@@ -15,8 +15,10 @@ abstract class Authentication
      * @param string $email
      * @param string $password
      * @param string $location URL you want to redirect user to
+     *
+     * @return boolean
      */
-    public static function login($email, $password, $location)
+    public static function login($email, $password)
     {
         $email = addslashes($email);
 
@@ -24,19 +26,23 @@ abstract class Authentication
         $database->connect();
         $result = $database->query("SELECT id, password, salt FROM users WHERE email='{$email}'");
 
+        $success = false;
+        
         if ($result->num_rows == 1) {
             $row = $result->fetch_array(MYSQLI_ASSOC);		
 
             $passwordHash = hash('sha512', $row['salt'].$password);	
 
-            if ($row['password'] == $passwordHash) {
+            $success = ($row['password'] == $passwordHash);
+            
+            if ($success) {
                 $_SESSION['user_id'] = $row['id'];
-
-                header('Location: '.$location);
             }
         }
 
         $database->disconnect();
+
+        return $success;
     }
 
     /**
