@@ -1,0 +1,12 @@
+User-Agent: *
+Disallow: /core/
+Disallow: /js/
+Disallow: /includes/
+Disallow: /republicas.php
+Disallow: /republicas
+Disallow: /esqueci-minha-senha.php
+Disallow: /esqueci-minha-senha
+Disallow: /cadastro-republica.php
+Disallow: /cadastro-republica
+
+Sitemap: http://eacherepublica.com.br/sitemap.xml
