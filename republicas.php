@@ -19,14 +19,9 @@ if (isset($_GET['list'], $_GET['lat'], $_GET['lng'], $_GET['r'], $_GET['n'])) {
     
     if ($valid) {
         $republicas = new Republicas();
-        echo $republicas->getRepublicas($latitude, $longitude, $radius, $numberRepublicas);
-    }
-} elseif (isset($_GET['insert']) && $_GET['insert']) {
-    if (!Authentication::isLoggedIn()) {
-        header('Location: index.php?goback='.$_SERVER['PHP_SELF']);
-    }
+        $json = $republicas->getRepublicas($latitude, $longitude, $radius, $numberRepublicas);
 
-    $republicas = new Republicas();
-    $republicas->addRepublica($_POST, $_SESSION['user_id']);
+        echo html_entity_decode($json);
+    }
 }
 
