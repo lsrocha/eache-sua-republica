@@ -62,6 +62,12 @@ class Republicas
         $valid &= (bool) filter_var($who_posted, FILTER_VALIDATE_INT);
 
         if ($valid) {
+            /*
+             * Javascript currency mask is returning an integer.
+             * 2 decimal places are requested.
+             */
+            $republica['price'] = $republica['price']/100;
+
             $sql = "SELECT id FROM republicas WHERE latitude='{$republica['latitude']}' AND longitude='{$republica['longitude']}'";
 
             $this->database->connect();
@@ -75,7 +81,7 @@ INSERT INTO republicas(
     address, gener, vacancy_type, 
     num_dwellers, who_posted, more
 )
-VALUE(
+VALUES(
     '{$republica['name']}', '{$republica['latitude']}', '{$republica['longitude']}',
     '{$republica['phone']}', '{$republica['email']}', '{$republica['price']}',
     '{$republica['address']}', '{$republica['gener']}', '{$republica['vacancy_type']}',
@@ -83,7 +89,7 @@ VALUE(
 )
 EOT;
 
-                $result = this->database->query($sql);
+                $result = $this->database->query($sql);
                 $this->database->disconnect();
                 
                 return $result;
