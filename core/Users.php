@@ -140,6 +140,8 @@ EOD;
      * @param string $email
      * @param string $password
      * @param string $token
+     *
+     * @return boolean
      */
     public function createNewPassword($email, $password, $token)
     {
@@ -161,11 +163,13 @@ EOD;
 
         $password = hash('sha512', $row['salt'].$password);
 			
-        $this->database->query("UPDATE users SET password='{$password}' WHERE email='{$email}'");
+        $updated = $this->database->query("UPDATE users SET password='{$password}' WHERE email='{$email}'");
 
         $this->database->query("DELETE FROM recovery_token WHERE email='{$email}'");        
 
         $this->database->disconnect();
+
+        return $updated;
     }
 }
 
