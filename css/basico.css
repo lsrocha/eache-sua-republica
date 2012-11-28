@@ -1,0 +1,52 @@
+body{
+    background: url("../img/background.png");
+    font-family: Verdana,  sans-serif;
+    font-size: 16px;
+    margin: 0;
+}
+header{
+    width: 400px;
+    float: left;
+    position: fixed;
+}
+h1{
+    display: block;
+    width: 400px;
+    height: 273px;
+    overflow: hidden;
+    background: url('../img/elements.png') 0 0 no-repeat;
+    text-indent: -9999px;
+    margin: 0 0 30px 0;
+}
+p{
+    line-height: 150%;
+    text-align: justify;
+    margin: 15px 0 10px 0;
+}
+h2{
+    font-size: 24px;
+    margin: 0 0 10px 0;
+}
+
+#wrapper{
+    margin: 50px auto 0 auto;
+    width: 950px;
+    overflow: auto;
+}
+#content{
+    width: 500px;
+    float: right;
+    padding-bottom: 25px;
+}
+
+form{
+    margin: 0;
+    padding: 0;
+}
+.required{
+    display: inline-block;
+    margin-bottom: 5px;
+}
+.fb-like{
+    margin-top: 0px;
+}

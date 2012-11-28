@@ -1,0 +1,96 @@
+body {
+    background: url('../img/background.png');
+    margin: 0;
+}
+img{
+    border: none;
+}
+
+#wrapper{
+    margin: 25px auto 0 auto; 
+    width: 838px;
+    overflow: auto;
+}
+
+header{
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+#header-right{
+    width: 628px;
+    float: left;
+    margin-left: 30px;
+}
+h1{
+    display: block;
+    width: 180px;
+    height: 130px;
+    float: left;
+    background: url('../img/elements.png') -413px 0 no-repeat;
+    text-indent: -9999px;
+    overflow: hidden;
+    margin: 0;
+}
+
+#user{
+    float: right;
+}
+#search-options{
+    clear: both;
+    margin-top: 60px;
+}
+.search-box-input{
+    width: 403px;
+}
+
+.circle-separator{
+    color: #333333;
+    margin: 0 5px;
+    font-size: 12px;
+}
+
+nav{
+    float: left;
+}
+ul.navbar {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+ul.navbar li {
+    display: inline;
+    margin: 0 10px 0 0;
+    padding: 0;
+}
+ul.navbar a {
+    text-decoration: none;
+}
+
+footer{
+    overflow: auto;
+    margin: 20px 0 25px 0;
+}
+footer img{
+    display: block;
+    float: right;
+}
+
+#google_map{
+    width: 838px; 
+    height: 576px;
+}
+#google_map img{
+    max-width: none;
+}
+#google_map label{
+    width: auto;
+    display: inline;
+}
+#social-networks{
+    display: inline-block;
+    margin-bottom: 15px;
+}
+.fb-like{
+    margin-top: 0px;
+}
