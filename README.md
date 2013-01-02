@@ -4,7 +4,7 @@ EACHe sua república
 English
 -------
 
-EACHe sua república is a collaborative project developed to help USP's (*University of Sao Paulo*) students to find friendships around EACH's (*School of Arts, Sciences and Humanities*) campus, located in east of Sao Paulo (Brazil). 
+EACHe sua república is a collaborative project developed to help USP's (University of Sao Paulo) students to find friendships around EACH's (School of Arts, Sciences and Humanities) campus, located in east of Sao Paulo (Brazil). 
 
 ### Creators ###
 
