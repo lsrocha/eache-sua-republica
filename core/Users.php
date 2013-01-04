@@ -28,16 +28,22 @@ class Users
      */
     public function addUser($name, $email, $password)
     {
-        $name = addslashes($name);
-        $email = addslashes($email);
+        $name = filter_var($name, FILTER_SANITIZE_STRING);
+        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+
+        $validEmail = (bool) filter_var($email, FILTER_VALIDATE_EMAIL);
+
+        if (!$validEmail) {
+            return false;
+        }
 
         $salt = self::generateSalt();
         $password = hash('sha512', $salt.$password);
 
-        $sql = <<<EOD
-INSERT INTO users(name, email, password, salt) 
-VALUES ('{$name}', '{$email}', '{$password}', '{$salt}')
-EOD;
+        $sql = "
+            INSERT INTO users(name, email, password, salt) 
+            VALUES ('{$name}', '{$email}', '{$password}', '{$salt}')
+        ";
 
         return $this->database->basicQuery($sql);
     }
@@ -48,6 +54,8 @@ EOD;
      */
     public function deleteUser($id)
     {
+        $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+        
         return $this->database->basicQuery("DELETE FROM users WHERE id='{$id}'");
     }
 
@@ -78,7 +86,12 @@ EOD;
      */
     public function isEmailRegistered($email)
     {
-        $email = addslashes($email);
+        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+        $validEmail = (bool) filter_var($email, FILTER_VALIDATE_EMAIL);
+
+        if (!$validEmail) {
+            return false;
+        }
 
         $this->database->connect();
         $result = $this->database->query("SELECT * FROM users WHERE email='{$email}'");
@@ -116,7 +129,7 @@ EOD;
      */
     public function generateRecoveryToken($email)
     {
-        $email = addslashes($email);
+        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
         $token = '';
 
         for ($i=0; $i < 12; $i++) {
@@ -145,17 +158,22 @@ EOD;
      */
     public function createNewPassword($email, $password, $token)
     {
-        $email = addslashes($email);
+        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+        $validEmail = (bool) filter_var($email, FILTER_VALIDATE_EMAIL);
+
+        if (!$validEmail) {
+            return false;
+        }
 
         $this->database->connect();
 
-        $sql = <<<EOD
-SELECT salt FROM users 
-INNER JOIN recovery_token 
-ON users.email=recovery_token.email 
-WHERE users.email='{$email}' 
-AND recovery_token.token='{$token}';
-EOD;
+        $sql = "
+            SELECT salt FROM users 
+            INNER JOIN recovery_token 
+            ON users.email=recovery_token.email 
+            WHERE users.email='{$email}' 
+            AND recovery_token.token='{$token}';
+        ";
 
         $result = $this->database->query($sql);
 

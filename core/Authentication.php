@@ -20,7 +20,13 @@ abstract class Authentication
      */
     public static function login($email, $password)
     {
-        $email = addslashes($email);
+        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+
+        $validEmail = (bool) filter_var($email, FILTER_VALIDATE_EMAIL);
+
+        if (!$validEmail) {
+            return false;
+        }
 
         $database = new Database();
         $database->connect();
