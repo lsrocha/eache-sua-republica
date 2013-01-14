@@ -5,7 +5,7 @@ namespace core;
  * @author Leonardo Rocha <leonardo.lsrocha@gmail.com>
  * @package core
  */
-class Database
+class Database extends \PDO
 {
     /**
      * Database host name.
@@ -38,54 +38,14 @@ class Database
      * @static
      */
     private static $database = '';
-    
-    /**
-     * @var mysqli
-     */
-    private $mysql;
-	
-    /**
-     * Opens MySQL connection.
-     */
-    public function connect()
-    {
-        $this->mysql = new \mysqli(self::$host, self::$user, self::$password, self::$database); 
-    }
 
-    /**
-     * Performs a query on the database.
-     *
-     * @param string $sql SQL Query
-     * @return mysqli_result object
-     */
-    public function query($sql)
+    public function __construct()
     {
-        return $this->mysql->query($sql);
-    }
-
-    /**
-     * Method for INSERT, UPDATE and DELETE queries.
-     *
-     * It opens a MySQL connection, executes queries and closes connection.
-     *
-     * @param string $sql SQL Query
-     * @return boolean
-     */
-    public function basicQuery($sql)
-    {
-        $this->connect();
-        $result = $this->query($sql);
-        $this->disconnect();
-
-        return $result;
-    }
-
-    /**
-     * Closes MySQL connection.
-     */
-    public function disconnect()
-    {
-        $this->mysql->close();
+        parent::__construct(
+            'mysql:host='.self::$host.';dbname='.self::$database,
+            self::$user,
+            self::$password
+        );
     }
 }
 

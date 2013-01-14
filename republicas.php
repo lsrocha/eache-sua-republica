@@ -3,25 +3,24 @@ session_start();
 
 require 'includes/autoloader.php';
 
+use core\Database;
 use core\Republicas; 
 use core\Authentication;
 
-if (isset($_GET['list'], $_GET['lat'], $_GET['lng'], $_GET['r'], $_GET['n'])) {
-    $latitude = filter_var($_GET['lat'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-    $longitude = filter_var($_GET['lng'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-    $radius = filter_var($_GET['r'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-    $numberRepublicas = filter_var($_GET['n'], FILTER_SANITIZE_NUMBER_INT);
-    
-    $valid = (bool) filter_var($latitude, FILTER_VALIDATE_FLOAT);
-    $valid &= (bool) filter_var($longitude, FILTER_VALIDATE_FLOAT);
-    $valid &= (bool) filter_var($radius, FILTER_VALIDATE_FLOAT);
-    $valid &= (bool) filter_var($numberRepublicas, FILTER_VALIDATE_INT);
-    
-    if ($valid) {
-        $republicas = new Republicas();
-        $json = $republicas->getRepublicas($latitude, $longitude, $radius, $numberRepublicas);
+if (isset($_GET['lat'], $_GET['lng'], $_GET['r'])) {
+    try {
+        $database = new Database();
+        $json = Republicas::getRepublicas(
+            $_GET['lat'],
+            $_GET['lng'],
+            $_GET['r'],
+            $database
+        );
 
         echo html_entity_decode($json);
+        $database = null;
+    } catch (PDOException $e) {
+        echo $e;
     }
 }
 

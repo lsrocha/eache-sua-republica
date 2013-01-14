@@ -3,14 +3,25 @@ session_start();
 
 require 'includes/autoloader.php';
 
+use core\Database;
 use core\Republicas; 
 use core\Authentication;
 
 $isLoggedIn = Authentication::isLoggedIn();
 
 if (isset($_POST{'name'})) {
-    $republicas = new Republicas();
-    $success = $republicas->addRepublica($_POST, $_SESSION['user_id']);
+    try {
+        $database = new Database();
+
+        $success = Republicas::addRepublica(
+            $_POST,
+            $_SESSION['user_id'],
+            $database
+        );
+
+        $database = null;
+    } catch (PDOException $e) {
+    }
 }
 ?>
 
@@ -92,7 +103,7 @@ if (isset($_POST{'name'})) {
                         <input type="number" min="0" max="100" name="num_vacancies" value="0" class="input-mini" /><br />
                     
                         <label>Mais Informa&ccedil;&otilde;es</label>
-                        <textarea id="more" rows =3 cols = 70 placeholder="Digite aqui mais informa&ccedil;&otilde;es" name="info_adicional" size ="60" maxlength="2400" class="input-block-level"></textarea>
+                        <textarea id="more" rows =3 cols = 70 placeholder="Digite aqui mais informa&ccedil;&otilde;es" name="more" size ="60" maxlength="2400" class="input-block-level"></textarea>
                     
                         <div id="canvas"></div>
                         <div id="confirmacao">

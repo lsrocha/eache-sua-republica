@@ -1,6 +1,7 @@
 <?php
 require 'includes/autoloader.php';
 
+use core\Database;
 use core\Users;
 
 if (isset($_POST['name'])) {	
@@ -9,12 +10,16 @@ if (isset($_POST['name'])) {
     $password = $_POST['password'];
 
     if (!empty($name) && !empty($email) && !empty($password)) {
-        $user = new Users();
+        try {
+            $database = new Database();
+            $registered = Users::isEmailRegistered($email, $database);
 
-        $registered = $user->isEmailRegistered($email);
+            if (!$registered) {
+                $created = Users::addUser($name, $email, $password, $database);
+            }
 
-        if (!$registered) {
-            $created = $user->addUser($name, $email, $password);
+            $database = null;
+        } catch (PDOException $e) {
         }
     }
 }

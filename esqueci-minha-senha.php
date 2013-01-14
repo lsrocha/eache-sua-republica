@@ -1,33 +1,37 @@
 <?php
 require 'includes/autoloader.php';
 
+use core\Database;
 use core\Users;
 
-if (isset($_GET['email']) && isset($_GET['token']) && isset($_POST['new_password'])) {
-    $email = $_GET['email'];
-    $password = $_POST['new_password'];
-    $token = $_GET['token'];    
+try {
+    $database = new Database();
 
-    $user = new Users();
-    $created = $user->createNewPassword($email, $password, $token);
+    if (isset($_GET['email']) && isset($_GET['token']) && isset($_POST['new_password'])) {
+        $created = Users::createNewPassword(
+            $_GET['email'],
+            $_POST['new_password'],
+            $_GET['token'],
+            $database
+        );
+    } elseif (isset($_POST['email'])) {
+        $registered = Users::isEmailRegistered($_POST['email'], $database);
 
-} elseif (isset($_POST['email'])) {
-    $email = $_POST['email'];
-    $user = new Users();
+        if ($registered) {
+            $token = Users::generateRecoveryToken($_POST['email'], $database);
 
-    $registered = $user->isEmailRegistered($email);
+            $message = "
+                Hey,\n 
+                Clique no link abaixo para criar uma nova senha:
 
-    if ($registered) {
-        $token = $user->generateRecoveryToken($email);
-
-        $message = <<<EOD
-Hey,\n 
-Clique no link abaixo para criar uma nova senha:
-
-\n http://eacherepublica.com.br/esqueci-minha-senha?email={$email}&token={$token}
-EOD;
-        $sent = mail($email, '[EACHE sua república] Esqueci minha senha', $message);
+                \n http://eacherepublica.com.br/esqueci-minha-senha?email={$email}&token={$token}
+            ";
+            $sent = mail($email, '[EACHE sua república] Esqueci minha senha', $message);
+        }
     }
+
+    $database = null;
+} catch (PDOException $e) {
 }
 ?>
 

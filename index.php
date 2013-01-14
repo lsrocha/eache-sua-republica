@@ -3,6 +3,7 @@ session_start();
 
 require 'includes/autoloader.php';
 
+use core\Database;
 use core\Authentication;
 
 $isLoggedIn = Authentication::isLoggedIn();
@@ -17,7 +18,14 @@ if ($isLoggedIn) {
     $password = $_POST['password'];
 
     if (!empty($email) && !empty($password)) {
-        $isLoggedIn = Authentication::login($email, $password); 
+        try {
+            $database = new Database();
+            $isLoggedIn = Authentication::login($email, $password, $database); 
+
+            $database = null;
+        } catch (PDOException $e) {
+            echo $e;
+        }
     }		
 }
 ?>
@@ -232,7 +240,7 @@ if ($isLoggedIn) {
             function login() { document.forms['login-form'].submit(); }
         </script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?libraries=geometry&sensor=false"></script>
-        <script type="text/javascript" src="js/maps-minified.js"></script>
+        <script type="text/javascript" src="js/maps.js"></script>
         <script src="http://code.jquery.com/jquery-latest.js"></script>
         <script src="js/bootstrap.min.js"></script>
         

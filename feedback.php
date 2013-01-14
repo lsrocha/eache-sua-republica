@@ -1,11 +1,16 @@
 <?php
 require 'includes/autoloader.php';
 
+use core\Database;
 use core\Feedback;
 
 if (isset($_POST['dificuldade'])) {
-    $feedback = new Feedback();
-    $success = $feedback->save($_POST);
+    try {
+        $database = new Database();
+        $success = Feedback::save($_POST, $database);
+        $database = null;
+    } catch (PDOException $e) {
+    }
 }
 ?>
 
@@ -62,8 +67,8 @@ if (isset($_POST['dificuldade'])) {
                     <br />
 
                     <p><b>Voc&ecirc; &eacute; aluno da </b><strong>EACH - USP</strong><b>?</b></p>
-                    <input type="radio" name="aluno" value="sim" /><label>Sim</label>
-                    <input type="radio" name="aluno" value="nao" /><label>N&atilde;o</label>
+                    <input type="radio" name="aluno_EACH" value="sim" /><label>Sim</label>
+                    <input type="radio" name="aluno_EACH" value="nao" /><label>N&atilde;o</label>
                     <br />
 
                     <p><b>Voc&ecirc; indicaria o site a terceiros?</b></p>
@@ -87,125 +92,125 @@ if (isset($_POST['dificuldade'])) {
                     <p>Design</p>
                     <div class="rating">
                         <label>0</label><br />
-                        <input type="radio" name="design" value="0" />
+                        <input type="radio" name="nota_design" value="0" />
                     </div>
 
                     <div class="rating">
                         <label>1</label><br />
-                        <input type="radio" name="design" value="1" />
+                        <input type="radio" name="nota_design" value="1" />
                     </div>
 
                     <div class="rating">
                         <label>2</label><br />
-                        <input type="radio" name="design" value="2" />
+                        <input type="radio" name="nota_design" value="2" />
                     </div>
 
                     <div class="rating">
                         <label>3</label><br />
-                        <input type="radio" name="design" value="3" />
+                        <input type="radio" name="nota_design" value="3" />
                     </div>
 
                     <div class="rating">
                         <label>4</label><br />
-                        <input type="radio" name="design" value="4" />
+                        <input type="radio" name="nota_design" value="4" />
                     </div>
 
                     <div class="rating">
                         <label>5</label><br />
-                        <input type="radio" name="design" value="5" />
+                        <input type="radio" name="nota_design" value="5" />
                     </div>
 
                     <p>Funcionalidades</p>
                     <div class="rating">
                         <label>0</label><br />
-                        <input type="radio" name="funcionalidades" value="0" />
+                        <input type="radio" name="nota_funcionalidades" value="0" />
                     </div>
 
                     <div class="rating">
                         <label>1</label><br />
-                        <input type="radio" name="funcionalidades" value="1" />
+                        <input type="radio" name="nota_funcionalidades" value="1" />
                     </div>
 
                     <div class="rating">
                         <label>2</label><br />
-                        <input type="radio" name="funcionalidades" value="2" />
+                        <input type="radio" name="nota_funcionalidades" value="2" />
                     </div>
 
                     <div class="rating">
                         <label>3</label><br />
-                        <input type="radio" name="funcionalidades" value="3" />
+                        <input type="radio" name="nota_funcionalidades" value="3" />
                     </div>
 
                     <div class="rating">
                         <label>4</label><br />
-                        <input type="radio" name="funcionalidades" value="4" />
+                        <input type="radio" name="nota_funcionalidades" value="4" />
                     </div>
 
                     <div class="rating">
                         <label>5</label><br />
-                        <input type="radio" name="funcionalidades" value="5" />
+                        <input type="radio" name="nota_funcionalidades" value="5" />
                     </div>
 
                     <p>Acessibilidade</p>
                     <div class="rating">
                         <label>0</label><br />
-                        <input type="radio" name="acessibilidade" value="0" />
+                        <input type="radio" name="nota_acessibilidade" value="0" />
                     </div>
 
                     <div class="rating">
                         <label>1</label><br />
-                        <input type="radio" name="acessibilidade" value="1" />
+                        <input type="radio" name="nota_acessibilidade" value="1" />
                     </div>
 
                     <div class="rating">
                         <label>2</label><br />
-                        <input type="radio" name="acessibilidade" value="2" />
+                        <input type="radio" name="nota_acessibilidade" value="2" />
                     </div>
 
                     <div class="rating">
                         <label>3</label><br />
-                        <input type="radio" name="acessibilidade" value="3" />
+                        <input type="radio" name="nota_acessibilidade" value="3" />
                     </div>
 
                     <div class="rating">
                         <label>4</label><br />
-                        <input type="radio" name="acessibilidade" value="4" />
+                        <input type="radio" name="nota_acessibilidade" value="4" />
                     </div>
 
                     <div class="rating">
                         <label>5</label><br />
-                        <input type="radio" name="acessibilidade" value="5" />
+                        <input type="radio" name="nota_acessibilidade" value="5" />
                     </div>
 
                     <p>Inser&ccedil;&atilde;o de rep&uacute;blicas</p>
                     <div class="rating">
                         <label>0</label><br />
-                        <input type="radio" name="inserir_rep" value="0" />
+                        <input type="radio" name="nota_insercao_reps" value="0" />
                     </div>                    
 
                     <div class="rating">
                         <label>1</label><br />
-                        <input type="radio" name="inserir_rep" value="1" />
+                        <input type="radio" name="nota_insercao_reps" value="1" />
                     </div>
 
                     <div class="rating">
                         <label>2</label><br />
-                        <input type="radio" name="inserir_rep" value="2" />
+                        <input type="radio" name="nota_insercao_reps" value="2" />
                     </div>
 
                     <div class="rating">
                         <label>3</label><br />
-                        <input type="radio" name="inserir_rep" value="3" />
+                        <input type="radio" name="nota_insercao_reps" value="3" />
                     </div>
 
                     <div class="rating">
                         <label>4</label><br />
-                        <input type="radio" name="inserir_rep" value="4" />
+                        <input type="radio" name="nota_insercao_reps" value="4" />
                     </div>
 
                     <div class="rating">
                         <label>5</label><br />
-                        <input type="radio" name="inserir_rep" value="5" />
+                        <input type="radio" name="nota_insercao_reps" value="5" />
                     </div>
 
                     <p><b>Encontrou alguma informa&ccedil;&atilde;o errada a respeito de uma </b><strong>rep&uacute;blica</strong><b>? Fale conosco:</b></p>

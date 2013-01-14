@@ -18,7 +18,7 @@ abstract class Authentication
      *
      * @return boolean
      */
-    public static function login($email, $password)
+    public static function login($email, $password, Database &$database)
     {
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
@@ -28,25 +28,25 @@ abstract class Authentication
             return false;
         }
 
-        $database = new Database();
-        $database->connect();
-        $result = $database->query("SELECT id, password, salt FROM users WHERE email='{$email}'");
+        $query = $database->prepare('
+            SELECT id, password, salt FROM users WHERE email = :email
+        ');
+        $query->bindParam(':email', $email, Database::PARAM_STR);
+        $query->execute();
 
         $success = false;
-        
-        if ($result->num_rows == 1) {
-            $row = $result->fetch_array(MYSQLI_ASSOC);		
 
-            $passwordHash = hash('sha512', $row['salt'].$password);	
+        if ($query->rowCount() == 1) {
+            $result = $query->fetch(Database::FETCH_ASSOC);		
 
-            $success = ($row['password'] == $passwordHash);
-            
+            $passwordHash = hash('sha512', $result['salt'].$password);	
+
+            $success = ($result['password'] == $passwordHash);
+
             if ($success) {
-                $_SESSION['user_id'] = $row['id'];
+                $_SESSION['user_id'] = $result['id'];
             }
         }
-
-        $database->disconnect();
 
         return $success;
     }

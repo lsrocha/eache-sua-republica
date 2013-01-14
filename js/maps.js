@@ -56,7 +56,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 function pegaRep(latitude, longitude, raio){ //Essa funcao nao eh chamada apenas na inicializacao/ Seu raio eh em km
 	var xmlhttp;
 	var result;
-	var url = "http://eacherepublica.com.br/republicas.php?list=1&lat="+latitude+"&lng="+longitude+"&r="+raio+"&n=50";
+	var url = "/republicas/republicas.php?lat="+latitude+"&lng="+longitude+"&r="+raio;
 
 	if (window.XMLHttpRequest){ // IE7+, Firefox, Chrome, Opera, Safari
 		xmlhttp=new XMLHttpRequest();
