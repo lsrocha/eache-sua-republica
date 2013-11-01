@@ -1,8 +1,6 @@
 <?php
 namespace EACHeRepublica\Lib;
 
-require 'Database.php';
-
 use EACHeRepublica\Lib\Database;
 
 /**
@@ -15,5 +13,5 @@ class Model
     public function __construct()
     {
         $this->database = Database::getInstance();
-    }    
+    }
 }

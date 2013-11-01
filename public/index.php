@@ -1,5 +1,7 @@
 <?php
-require '../src/EACHeRepublica/Model/User.php';
+require realpath('../config/core.php');
+require ROOT.DS.'config'.DS.'database.php';
+require ROOT.DS.'vendor'.DS.'autoload.php';
 
 use EACHeRepublica\Model\User;
 

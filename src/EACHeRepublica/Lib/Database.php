@@ -1,8 +1,6 @@
 <?php
 namespace EACHeRepublica\Lib;
 
-require '/srv/www/EACHe-sua-republica/config/database.php';
-
 use \PDO;
 
 /**

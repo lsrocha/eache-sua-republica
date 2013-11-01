@@ -1,8 +1,6 @@
 <?php
 namespace EACHeRepublica\Model;
 
-require '/srv/www/EACHe-sua-republica/src/EACHeRepublica/Lib/Model.php';
-
 use \PDO;
 use EACHeRepublica\Lib\Model;
 
