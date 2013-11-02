@@ -9,7 +9,7 @@ use EACHeRepublica\Lib\Model;
  */
 class User extends Model
 {
-    public function add(array $values)
+    public function add(array &$values)
     {
         $keys = array('name', 'password', 'email', 'salt');
         $diff = array_diff($keys, array_keys($values));
@@ -37,10 +37,11 @@ class User extends Model
         $query = $this->database->prepare('DELETE FROM users WHERE id = :id');
         $query->bindParam(':id', $id, PDO::PARAM_INT);
         $query->execute();
+
         return ($query->rowCount() === 1);
     }
 
-    public function listAll()
+     public function listAll()
     {
         $query = $this->database->query('SELECT name, email FROM users');
         return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -49,9 +50,23 @@ class User extends Model
     public function exists($email)
     {
         $query = $this->database->prepare(
-            'SELECT * FROM users WHERE email = :email'
+            'SELECT id FROM users WHERE email = :email'
         );
         $query->bindParam(':email', $email, PDO::PARAM_STR);
         $query->execute();
+
+        return ($query->rowCount() === 1);
+    }
+
+    public function setPassword($email, $password)
+    {
+        $query = $database->prepare(
+            'UPDATE users SET password = :password WHERE email = :email'
+        );
+
+        $query->bindParam(':email', $email, PDO::PARAM_STR);
+        $query->bindParam(':password', $password, PDO::PARAM_STR);
+
+        return $query->execute();
     }
 }
