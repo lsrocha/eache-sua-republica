@@ -41,7 +41,7 @@ class User extends Model
         return ($query->rowCount() === 1);
     }
 
-     public function listAll()
+    public function listAll()
     {
         $query = $this->database->query('SELECT name, email FROM users');
         return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -60,7 +60,7 @@ class User extends Model
 
     public function setPassword($email, $password)
     {
-        $query = $database->prepare(
+        $query = $this->database->prepare(
             'UPDATE users SET password = :password WHERE email = :email'
         );
 
